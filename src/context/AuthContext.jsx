@@ -12,7 +12,7 @@ const AuthProvider = ({ children }) => {
 
   // Configuración de Keycloak
   useEffect(() => {
-    const keycloakInstance = Keycloak("/path/to/keycloak.json");
+    const keycloakInstance = new Keycloak("/keycloak.json");
     keycloakInstance
       .init({ onLoad: "check-sso" })
       .then((authenticated) => {
@@ -27,7 +27,7 @@ const AuthProvider = ({ children }) => {
 
   // Funciones para iniciar y cerrar sesión
   const login = () => keycloak && keycloak.login();
-  const logout = () => keycloak && keycloak.logout();
+  const logout = () => keycloak && keycloak.logout({ redirectUri: "http://localhost:3000/welcome" });
 
   // Verificación de roles y permisos
   const hasRole = (role) => keycloak && keycloak.hasRealmRole(role);
