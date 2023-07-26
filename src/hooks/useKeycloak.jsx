@@ -5,20 +5,19 @@ function useKeyCloak() {
   const [keycloak, setKeycloak] = useState(null);
 
   useEffect(() => {
-    let initSetting = {
-      onLoad: "login-required",
+    const initializeKeycloak = async () => {
+      try {
+        const keycloakInstance = new Keycloak("/keycloak.json");
+        const authenticated = await keycloakInstance.init({ onLoad: "login-required" });
+        console.log("Init - Authenticated: ", authenticated);
+        setKeycloak(keycloakInstance);
+      } catch (error) {
+        console.error("Error initializing Keycloak: ", error);
+      }
     };
-    let keycloak = new Keycloak("/keycloak.json");
 
-    console.log("Before init - Authenticated: ", keycloak.authenticated);
-
-    keycloak.init(initSetting).then((authenticated) => {
-      console.log("Init - Authenticated");
-      setKeycloak(keycloak);
-    });
-
-    console.log("After init - Authenticated: ", keycloak.authenticated);
-  }, []);
+    initializeKeycloak();
+  }, []); // The empty array [] ensures this effect runs only once, on mount
 
   return keycloak;
 }
