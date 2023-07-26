@@ -5,7 +5,6 @@ import Welcome from "./pages/Welcome";
 import Public from "./pages/Public";
 import UserDetails from "./pages/UserDetails";
 import Manager from "./pages/Manager";
-
 import "./App.css";
 
 function App() {
