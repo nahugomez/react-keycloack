@@ -30,7 +30,7 @@ const AuthProvider = ({ children }) => {
   const logout = () => keycloak && keycloak.logout({ redirectUri: "http://localhost:3000/welcome" });
 
   // Verificación de roles y permisos
-  const hasRole = (role) => keycloak && keycloak.hasRealmRole(role);
+  const hasRole = (role) => keycloak && keycloak.hasResourceRole(role);
 
   // Renderizamos el contexto con los valores y funciones relevantes
   return (
