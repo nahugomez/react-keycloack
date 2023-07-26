@@ -5,6 +5,7 @@ import Welcome from "./pages/Welcome";
 import Public from "./pages/Public";
 import UserDetails from "./pages/UserDetails";
 import Manager from "./pages/Manager";
+import ProtectedResource from "./utils/ProtectedResource";
 import "./App.css";
 
 function App() {
@@ -35,8 +36,22 @@ function App() {
           <Route index element={<Home />} />
           <Route path="/welcome" element={<Welcome />} />
           <Route path="/public" element={<Public />} />
-          <Route path="/manager" element={<Manager />} />
-          <Route path="/user-details" element={<UserDetails />} />
+          <Route
+            path="/manager"
+            element={
+              <ProtectedResource role={"manager"}>
+                <Manager />
+              </ProtectedResource>
+            }
+          />
+          <Route
+            path="/user-details"
+            element={
+              <ProtectedResource role={"user"}>
+                <UserDetails />
+              </ProtectedResource>
+            }
+          />
         </Routes>
       </Container>
     </BrowserRouter>
