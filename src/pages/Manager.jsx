@@ -1,21 +1,42 @@
 import React from "react";
-import useKeyCloak from "../hooks/useKeycloak";
-import Logout from "../components/Logout";
-import { Box } from "@mui/material";
+import { useContext } from "react";
+import { Box, Button } from "@mui/material";
+import { AuthContext } from "../context/AuthContext";
 
 const Manager = () => {
-  const keycloak = useKeyCloak();
+  const { authenticated, hasRole, logout, login } = useContext(AuthContext);
+
+  if (!authenticated) {
+    return (
+      <Box>
+        <p>No se encuentra autenticado actualmente. Inicie sesion para poder ver la pagina</p>
+        <Button variant="contained" onClick={login}>
+          Iniciar Sesion
+        </Button>
+      </Box>
+    );
+  }
+
+  console.log(!hasRole("manager"));
+
+  if (!hasRole("manager")) {
+    return (
+      <Box>
+        <p>No tiene los permisos suficientes para acceder a esta seccion.</p>
+        <Button variant="contained" onClick={logout}>
+          Cerrar Sesion
+        </Button>
+      </Box>
+    );
+  }
+
   return (
-    <div>
-      {keycloak && keycloak.hasResourceRole("manager") ? (
-        <Box>
-          <p>Estas autenticado y tenes rol de Manager</p>
-          <Logout keycloak={keycloak} />
-        </Box>
-      ) : (
-        <p>No estas autenticado, o no tenes los permisos necesarios. Redirigiendo a Keycloak para realizar autenticacion</p>
-      )}
-    </div>
+    <Box>
+      <p>Autenticado Correctamente, y tiene los permisos necesarios</p>
+      <Button variant="contained" onClick={logout}>
+        Cerrar Sesion
+      </Button>
+    </Box>
   );
 };
 
